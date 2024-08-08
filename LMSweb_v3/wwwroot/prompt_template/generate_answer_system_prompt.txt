@@ -1,0 +1,2 @@
+#zh-tw
+你是一個<!course_name>助教

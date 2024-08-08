@@ -1,0 +1,65 @@
+@model StudentEditViewModel
+@{
+    ViewData["Title"] = "編輯學生資料";
+    string courseName = @$"課程名稱：{Model.CourseName}";
+    string h2_title = "";
+    string cancelUrl = Url.Action("Index", "StudentManagement", new { cid = Model.CourseId }) ?? "";
+}
+
+@section NavPills {
+    <ul class="nav nav-pills me-auto ms-3">
+        <partial name="~/Views/Nav/_TeacherNavPartial.cshtml" 
+                model="new TeacherNavViewModel { CourseID = Model.CourseId, ActiveIndex = 0 }" />
+    </ul>
+}
+
+<div class="container">
+    <partial name="~/Views/AllPartial/_ViewTitlePartial.cshtml" 
+            model="new ViewTitlePartialViewModel { h1 = courseName, h2 = h2_title }" />
+    <div class="card m-3 p-4">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal row">
+                <h4 class="fs-3 text-center mt-1">編輯學生資料</h4>
+                <div class="mb-3 my-1">
+                    @Html.LabelFor(model => model.StudentName, new { @class = "form-label ms-2 fs-5 my-1" })
+                    <div class="row mx-1">
+                        @Html.TextBoxFor(model => model.StudentName, new { @class = "form-control col-12 fs-5"})
+                        @Html.ValidationMessageFor(model => model.StudentName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="mb-3 my-1">
+                    @Html.LabelFor(model => model.StudentSex, new { @class = "form-label ms-2 fs-5 my-1" })
+                    <div class="row mx-1">
+                        <select class="form-select fs-5" id="Sex" name="StudentSex">
+                            @if (Model.StudentSex == "男")
+                            {
+                                <option value="男" selected>男</option>
+                                <option value="女">女</option>
+                            }
+                            else
+                            {
+                                <option value="男">男</option>
+                                <option value="女" selected>女</option>
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(model =>  model.StudentSex, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="mb-3 my-1">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <input type="submit" value="儲存" class="btn btn-primary w-100 fs-5" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <a class="btn btn-secondary w-100 fs-5" href="@cancelUrl">取消</a>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

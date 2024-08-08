@@ -1,0 +1,47 @@
+@model IEnumerable<LMSweb_v3.ViewModels.Course.CourseViewModel>
+
+@{
+    ViewBag.Title = "新增課程";
+}
+
+<div class="container">
+    <div class="card m-3 p-3">
+        <div class="row m-2">
+            <p class="col col-md flex-shrink-1 w-auto fs-2 my-auto">課程列表</p>
+            <div class="col col-md-2 justify-content-end d-flex">
+                <a class="btn btn-primary w-auto py-2 fs-5" href='@Url.Action("Create", "Course")'>
+                    新增課程
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="article m-3">
+        <div class="row row-cols-1 row-cols-md-4 mb-4 text-center">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="card mb-3 shadow-sm" style="border-radius: 15px; ">
+                        <div class="card-body">
+                            <div class="card-title pricing-card-title text-center mt-2 py-2 px-1">
+                                <p class="h3" style="min-height: 80px">
+                                    @Html.DisplayFor(modelItem => item.CourseName, new { @class = "fw-bold" })
+                                </p>
+                            </div>
+
+                            <p class="h6">ID : @Html.DisplayFor(modelItem => item.CourseId)</p>
+
+                            <hr />
+                            @Html.ActionLink("進入課程", "Index", "Material", new { cid = item.CourseId }, new { @class = "btn btn-primary" })
+                            <a type="button" class="btn btn-link p-1" href="@Url.Action("Edit", "Course", new { cid = item.CourseId })">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <a type="button" class="btn btn-link" style="padding: 5px 5px 5px 5px" href="@Url.Action("Delete", "Course", new { cid = item.CourseId })">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    @* 設定OG相關資訊 *@
+    <meta property="og:title" content="LMSWeb 3.0" />
+    <meta property="og:description" content="生成式AI輔助學習系統" />
+    <meta property="og:image" content="https://www.lmswebbydblab.com/LMSweb_v3/icon.ico" />
+
+    <title>LMSWeb3.0</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-fileinput/css/fileinput.min.css" />
+    <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.min.css" />
+    <link rel="shortcut icon" href="~/icon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="~/css/mycss/mainStyle.css" />
+
+    @RenderSection("topCSS", required: false)
+    @RenderSection("topJS", required: false)
+</head>
+<body>
+    <header id="header">
+        @*@RenderSection("header", required: false)*@
+        <nav class="navbar navbar-expand-lg navbar-light text-white">
+            <div class="container">
+
+                @if (User.IsInRole("Student") == true)
+                {
+                    <a class="text-light text-decoration-none h3 my-auto" href="@Url.Action("Home", "Student")">
+                        LMSWeb 3.0
+                    </a>
+                }
+                else
+                {
+                    <a class="text-light text-decoration-none h3 my-auto" href="@Url.Action("Home", "Teacher")">
+                        LMSWeb 3.0
+                    </a>
+                }
+
+                @RenderSection("NavPills", required: false)
+
+                <ul class="navbar-nav flex-row text-light">
+                    <partial name="_LoginPartial" />
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main">
+        @RenderBody()
+    </main>
+
+    <footer class="w-100">
+        <div class="container d-flex flex-wrap text-white">
+            <p class="d-block">&copy; @DateTime.Now.Year</p>
+            <p class="ms-auto d-block">Generative AI-assisted Learning System</p>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+    @RenderSection("endCSS", required: false)
+    @RenderSection("endJS", required: false)
+</body>
+</html>

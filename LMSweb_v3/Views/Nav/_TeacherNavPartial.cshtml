@@ -1,0 +1,26 @@
+@model TeacherNavViewModel
+@{
+    var CourseID = Model.CourseID;
+    var ActiveIndex = Model.ActiveIndex;
+
+    List<string> IsActive = ["active", ""];
+    string mission = IsActive[ActiveIndex == 0 ? 0 : 1];
+    string student = IsActive[ActiveIndex == 1 ? 0 : 1];
+    string assistant = IsActive[ActiveIndex == 2 ? 0 : 1];
+    string export = IsActive[ActiveIndex == 3 ? 0 : 1];
+}
+
+<li>
+    <a class="text-white nav-link @student" href="@Url.Action("Index", "StudentManagement", new { cid = CourseID })">學生名單</a>
+</li>
+<li>
+    <a class="text-white nav-link @mission" href="@Url.Action("Index","Material", new { cid = CourseID })">教材管理</a>
+</li>
+<li>
+    <a class="text-white nav-link @assistant" href="@Url.Action("Edit","PromptManage", new { cid = CourseID })">提示語管理</a>
+</li>
+<li>
+    <a class="text-white nav-link @export" href="@Url.Action("Export", "PromptManage", new { cid = CourseID })">
+        匯出學生與AI小幫手的對話紀錄
+    </a>
+</li>

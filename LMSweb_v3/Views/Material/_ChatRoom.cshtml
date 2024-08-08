@@ -1,0 +1,6 @@
+﻿@model MaterialIndexViewModel
+<div id="ai_assistant" class="offcanvas offcanvas-end" tabindex="-1" aria-labelledby="ai_assistantLabel">
+    <div class="offcanvas-body h-100 overflow-hidden">
+        <iframe class="w-100 h-100" src="@Url.Action("AskAIAssistent","Student", new {cid = Model.CourseID})"></iframe>
+    </div>
+</div>

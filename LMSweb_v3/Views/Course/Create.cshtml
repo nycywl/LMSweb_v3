@@ -1,0 +1,32 @@
+﻿@model CourseCreateViewModel
+
+@{
+    ViewBag.Title = "新增課程 ";
+}
+
+<div class="container ms-auto">
+    <div class="card col-4 mx-auto bg-white my-5 p-3">
+        <h4 class="align-self-center">新增課程</h4>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger", sortOrder = ViewBag.DateSortParm })
+
+                <div class="mb-3 mt-2">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col mb-1" })
+                    <div class="col">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-actions no-color row p-3">
+                    <input type="submit" value="送出" class="btn btn-primary col-5" />
+                    <a href="@Url.Action("Home", "Teacher")" class="btn btn-secondary col-5 ms-auto">取消</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

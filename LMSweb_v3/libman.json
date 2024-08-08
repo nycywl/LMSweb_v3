@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap@5.3.3",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "jquery@3.7.1",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "jquery-validation-unobtrusive@4.0.0",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
+    },
+    {
+      "library": "jquery-validate@1.20.0",
+      "destination": "wwwroot/lib/jquery-validation/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "bs-stepper@1.7.0",
+      "destination": "wwwroot/lib/bs-stepper/"
+    },
+    {
+      "library": "jasny-bootstrap@4.0.0",
+      "destination": "wwwroot/lib/jasny-bootstrap/"
+    },
+    {
+      "library": "bootstrap-icons@1.10.5",
+      "destination": "wwwroot/lib/bootstrap-icons/"
+    },
+    {
+      "library": "moment.js@2.29.4",
+      "destination": "wwwroot/lib/moment.js/"
+    },
+    {
+      "library": "bootstrap-select@1.13.18",
+      "destination": "wwwroot/lib/bootstrap-select/"
+    },
+    {
+      "library": "bootbox.js@6.0.0",
+      "destination": "wwwroot/lib/bootbox.js/"
+    },
+    {
+      "library": "jquery.form@4.3.0",
+      "destination": "wwwroot/lib/jquery.form/"
+    },
+    {
+      "library": "bootstrap-fileinput@5.5.2",
+      "destination": "wwwroot/lib/bootstrap-fileinput/"
+    },
+    {
+      "library": "sweetalert2@11.10.6",
+      "destination": "wwwroot/lib/sweetalert2/"
+    }
+  ]
+}

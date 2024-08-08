@@ -1,0 +1,63 @@
+﻿@model StudentHomeViewModel
+
+@{
+    ViewBag.Title = "Index";
+    int k = 1;
+}
+
+<div class="container">
+    <div class="card m-3 p-3">
+        <div class="row m-2">
+            <p class="col flex-shrink-1 w-auto fs-2 my-auto">課程資訊</p>
+        </div>
+    </div>
+
+    <div class="card m-3 bg-white">
+        @if (Model != null)
+        {
+            <table class="table table-striped m-auto text-center">
+                <thead>
+                    <tr class="row m-3">
+                        <th class="col-1">#</th>
+                        <th class="col-2">
+                            課程名稱
+                        </th>
+                        <th class="col-2">
+                            授課老師
+                        </th>
+                        <th class="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="number">
+                    <tr class="row mx-3 my-1 ">
+                        <td class="col-1">@(k++)</td>
+                        <td class="col-2">
+                            @Html.DisplayFor(model => model.CourseName)
+                        </td>
+                        <td class="col-2">
+                            @Html.DisplayFor(model => model.TeacherName)
+                        </td>
+                        <td class="col flex-shrink-1">
+                            <div class="d-grid gap-3 d-md-flex justify-content-center">
+                                <a class=" btn btn-primary" href="@Url.Action("Index", "Material", new {cid = Model.CourseID})">
+                                    進入我的課程
+                                    <i class="bi bi-arrow-right-circle"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+
+        @if (ViewBag.isError != null)
+        {
+            <div class="d-flex justify-content-center">
+                <div class="alert alert-warning w-50 m-3" role="alert">
+                    <h4 class="alert-heading">目前沒有課程</h4>
+                    <p class="text-center">請聯絡老師或管理員</p>
+                </div>
+            </div>            
+        }
+    </div>
+</div>

@@ -1,0 +1,283 @@
+@model MaterialIndexViewModel
+@{
+    // 編號變數
+    int k = 1;
+
+    string title = @$"課程名稱：{Model.CourseName}";
+}
+
+@if(User.IsInRole("Teacher"))
+{
+    @section NavPills {
+        <ul class="nav nav-pills me-auto ms-3">
+            <partial name="~/Views/Nav/_TeacherNavPartial.cshtml" 
+                    model="new TeacherNavViewModel { CourseID = Model.CourseID, ActiveIndex = 0 }" />
+        </ul>
+    }
+}
+
+<div class="container">
+    <partial name="~/Views/AllPartial/_ViewTitlePartial.cshtml" model="new ViewTitlePartialViewModel { h1 = title}" />
+    <div class="card m-3 p-4">
+        <div class="row mb-3">
+            <div class="col">
+                <h3>教材列表</h3>
+            </div>
+            @if (User.IsInRole("Teacher"))
+            {
+                <div class="col d-flex justify-content-end me-2">
+                    <a href="#" class="btn btn-primary w-auto mx-2 my-auto" data-bs-toggle="modal" data-bs-target="#UploadModal">
+                        <i class="bi bi-folder2"></i>
+                        上傳教材
+                    </a>
+                </div>
+            }
+
+            @if (User.IsInRole("Student"))
+            {
+                <div class="col d-flex justify-content-end me-2">
+                    <a href="#ai_assistant" class="btn btn-primary w-auto mx-2 my-auto" data-bs-toggle="offcanvas" role="button" aria-controls="ai_assistant">
+                        <i class="bi bi-chat-left-dots-fill pe-2"></i>
+                        詢問AI小幫手
+                    </a>
+                </div>
+            }
+        </div>
+        @if(Model.Materials.Count == 0)
+        {
+            @if(User.IsInRole("Student"))
+            {
+                <div class="alert alert-info" role="alert">
+                    目前老師還沒有上傳教材喔~
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info" role="alert">
+                    目前尚無教材，請點擊上方按鈕上傳教材
+                </div>
+            }
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="row mx-1">
+                            <th class="col-1">#</th>
+                            <th class="col">檔案名稱</th>
+                            <th class="col">上傳時間</th>
+                            @if (User.IsInRole("Teacher"))
+                            {
+                                <th class="col"></th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody id="number">
+                        @foreach (var material in Model.Materials)
+                        {
+                            <tr class="row bg-white mx-1">
+                                <td class="col-1 align-self-center py-3">
+                                    <span class="ms-2">@k</span>
+                                </td>
+                                <td class="col align-self-center py-3">
+                                    <a href="@Url.Action("Download","Material", new {mid = material.MaterialID})">
+                                        @material.FileName
+                                    </a>
+                                </td>
+                                <td class="col align-self-center py-3">@material.UploadTime</td>
+
+                                @if (User.IsInRole("Teacher"))
+                                {
+                                    <td class="d-grid d-flex justify-content-center col">
+                                        <button id="@material.MaterialID" class="btn btn-danger w-auto mx-2 my-auto">
+                                            <i class="bi bi-trash"></i>
+                                            刪除
+                                        </button>
+                                        @if(material.IsTrainingMaterial)
+                                        {
+                                            <button id="@material.MaterialID" class="btn btn-success w-auto mx-2 my-auto" disabled>
+                                                <i class="bi bi-check"></i>
+                                                訓練完成
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button id="@material.MaterialID" class="btn btn-primary w-auto mx-2 my-auto">
+                                                <i class="bi bi-cpu"></i>
+                                                訓練
+                                            </button>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                            k++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        
+        <partial name="_UploadFile" />
+        <partial name="_ChatRoom" />
+    </div>
+</div>
+
+@if(User.IsInRole("Teacher"))
+{
+    @section scripts
+    {
+        <script src="~/lib/bootbox.js/bootbox.min.js"></script>
+        <script src="~/lib/jquery.form/jquery.form.js"></script>
+        <script src="~/lib/bootstrap-fileinput/js/fileinput.js"></script>
+        <script src="~/lib/bootstrap-fileinput/js/locales/zh-TW.js"></script>
+        <script src="~/lib/bootstrap-fileinput/themes/fa4/theme.js"></script>
+        <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
+        <script>
+
+            const deleteBtnClickHandler = (e) => {
+                e.preventDefault();
+                let materialID = e.target.id;
+                Swal.fire({
+                    title: '確定要刪除這個檔案嗎?',
+                    text: "刪除檔案後將無法復原!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消'
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {                        
+                        window.location.href = '@Url.Action("Delete", "Material")' + '?mid=' + materialID;
+                    }
+                })
+            }
+
+            window.onload = function () {
+                let tableLine = document.getElementById("number");
+                if (tableLine !== null) {
+                    for (let i = 0; i < tableLine.rows.length; i++) {
+                        tableLine.rows[i].cells[0].innerHTML = (i + 1);
+                    }
+
+                    let allDeleteFileBtn = document.querySelectorAll("button.btn-danger");
+                    allDeleteFileBtn.forEach((deleteBtn) => {
+                        deleteBtn.addEventListener("click", deleteBtnClickHandler)
+                    })
+
+                let allTrainingBtn = document.querySelectorAll("button.btn-primary");
+                    allTrainingBtn.forEach((trainingBtn) => {
+                        trainingBtn.addEventListener("click", (e) => {
+                            e.preventDefault();
+                            let materialID = e.target.id;
+                            Swal.fire({
+                                title: '確定要訓練這個檔案嗎?',
+                                icon: 'info',
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                cancelButtonColor: '#3085d6',
+                                confirmButtonText: '確定',
+                                cancelButtonText: '取消'
+                            })
+                            .then((result) => {
+                                if (result.isConfirmed) {
+                                    e.target.innerText = "訓練中...";
+                                    e.target.setAttribute('disabled','')
+                                    e.target.style.cursor = "not-allowed";
+
+                                    const myHeaders = new Headers();
+                                    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+                                    const urlencoded = new URLSearchParams();
+                                    urlencoded.append("mid", e.target.id);
+
+                                    const requestOptions = {
+                                        method: "POST",
+                                        headers: myHeaders,
+                                        body: urlencoded
+                                    };
+                                    fetch('@Url.Action("Training", "Material")', requestOptions)
+                                        .then(response => response.json())
+                                        .then(result => {
+                                            if (result.success) {
+                                                Swal.fire({
+                                                    title: '訓練成功',
+                                                    icon: 'success',                                                   
+                                                }).then((result) => {
+                                                    if(result.isConfirmed) window.location.reload();
+                                                });
+                                                
+                                            } else {
+                                                Swal.fire({
+                                                    title: '訓練失敗',
+                                                    icon: 'error',
+                                                    showConfirmButton: false,
+                                                })
+                                            }
+                                        })
+                                        .catch(error => {
+                                            Swal.fire({
+                                                title: '訓練失敗',
+                                                icon: 'error',
+                                                showConfirmButton: false,
+                                                timer: 1500
+                                            })
+                                        })
+                                }
+                            })
+                        })
+                    })
+                }
+                
+                $("#file").fileinput({
+                    theme: 'fa',
+                    language: 'zh-TW',
+                    uploadUrl: '@Url.Action("Upload", "Material", new { cid = Model.CourseID })',
+                    textEncoding: 'utf-8',
+                    required: true,
+                    showBrowse: true,
+                    browseOnZoneClick: true,
+                    dropZoneEnabled: true,
+                    allowedFileExtensions: ["pdf"],//只能選擇pdf格式的檔案提交
+                    //maxFileSize: 0,//單位為kb，如果為0表示不限制檔案大小
+                    /*不同檔案圖示配置*/
+                    previewFileIconSettings: {
+                        'docx': '<i class="fa fa-file-word-o text-primary" ></i>',
+                        'xlsx': '<i class="fa fa-file-excel-o text-success"></i>',
+                        'pptx': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+                        'jpg': '<i class="fa fa-file-photo-o text-warning"></i>',
+                        'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>',
+                        'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
+                        'doc': '<i class="fa fa-file-word-o text-primary"></i>',
+                        'xls': '<i class="fa fa-file-excel-o text-success"></i>',
+                        'ppt': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+                        'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>',
+                        'zip': '<i class="fa fa-file-archive-o text-muted"></i>',
+                        'htm': '<i class="fa fa-file-code-o text-info"></i>',
+                        'txt': '<i class="fa fa-file-text-o text-info"></i>',
+                        'mov': '<i class="fa fa-file-movie-o text-warning"></i>',
+                        'mp3': '<i class="fa fa-file-audio-o text-warning"></i>',
+                        'jpg': '<i class="fa fa-file-photo-o text-danger"></i>',
+                        'gif': '<i class="fa fa-file-photo-o text-muted"></i>',
+                        'png': '<i class="fa fa-file-photo-o text-primary"></i>'
+                    },
+                    layoutTemplates: { actionUpload: '' },
+                    /*上傳成功之後執行*/
+                    fileuploaded: $("#file").on("fileuploaded", function (event, data, previewId, index) {
+                        //alert("新增成功")
+                        location.reload();
+                    }),
+
+                    /*上傳出錯誤處理*/
+                    fileerror: $('#file').on('fileerror', function (event, data, msg) {
+                        console.log(data);
+                    }),
+                });
+            }
+
+            
+        </script>
+    }
+}

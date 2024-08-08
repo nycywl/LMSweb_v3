@@ -1,0 +1,217 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+html, body {
+    height: 100%;
+    position: relative;
+}
+
+/* 對話框頁首 START */
+.dialogue-header {
+    width: 100%;
+    height: 6em;
+    background-color: #a7a7a7;
+    box-sizing: border-box;
+}
+
+    .dialogue-header h2 {
+        color: #fff;
+        text-align: center;
+        line-height: 96px;
+        margin: auto;
+    }
+/* 對話框頁首 END */
+
+/* 對話框內容 START */
+.dialogue {
+    width: 100%;
+    height: calc(100% - 184px);
+    overflow-y: scroll;
+    padding: 1em;
+    background-color: #e3e4e6;
+    box-sizing: border-box;
+}
+
+.user {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+.local {
+    justify-content: flex-end;
+}
+
+.user .avatar {
+    width: 60px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.user .pic {
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.user .pic img {
+    width: 100%;
+    vertical-align: middle;
+}
+
+.user .text {
+    background-color: #aaa;
+    padding: 16px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.remote .text {
+    margin-left: 20px;
+    margin-right: 80px;
+    background-color: #fff;
+}
+
+.local .text {
+    margin-right: 20px;
+    margin-left: 80px;
+    order: -1;
+    background-color: #3e92cc;
+    color: #fff;
+}
+
+.local .text:before,
+.remote .text:before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+
+.remote .text:before {
+    border-right: 10px solid #fff;
+    left: -10px;
+}
+
+.local .text:before {
+    border-left: 10px solid #3e92cc;
+    right: -10px;
+}
+/* 對話框內容 END */
+
+/* 滿意度按鈕 START */
+.satisfied {
+    display: flex;
+    justify-content: end;
+    gap: 1;
+    line-height: 0.3rem;
+}
+
+/*按鈕禁用狀態*/
+.good-btn:disabled, .bad-btn:disabled {
+    background-color: #aaa;
+    border-color: #aaa;
+}
+/* 滿意度按鈕 END   */
+
+/* 對話框訊息輸入區 START */
+
+.dialogue-footer {
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    background-color: #a7a7a7;
+    position: absolute;
+    bottom: 0;
+}
+
+/* 對話框訊息輸入區   END */
+
+/* ====== 對話載入中效果 ====== */
+.loading > div {
+    background-color: #72c2a1;
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    display: inline-block;
+    animation: zoominout 0.7s infinite ease-in-out;
+}
+
+.loading .circle1 {
+    animation-delay: 0s;
+}
+
+.loading .circle2 {
+    animation-delay: .1s;
+}
+
+.loading .circle3 {
+    animation-delay: .2s;
+}
+
+.loading .circle4 {
+    animation-delay: .3s;
+}
+
+.loading .circle5 {
+    animation-delay: .4s;
+}
+
+@keyframes zoominout {
+    0%, 40%, 100% {
+        transform: scale(1);
+    }
+
+    20% {
+        transform: scale(2);
+    }
+}
+/* ====== 對話載入中效果 ====== */
+
+.hidden {
+    display: none;
+}
+
+.text-small {
+    font-size: 0.9em;
+    /*font-weight: bold;*/
+}
+
+@media screen and (width <= 768px) {
+    .dialogue-header {
+        height: 6em;
+    }
+
+        .dialogue-header h2 {
+            text-align: center;
+        }
+
+    .remote .text {
+        width: 100%;
+        margin-left: 0.5rem;
+        margin-right: 0;
+    }
+
+    .local .text {
+        width: 100%;
+        margin-right: 0.5rem;
+        margin-left: 0;
+    }
+}
+
+@media screen and (width > 768px) and (width <= 1024px) {
+    .dialogue-header {
+        height: 6em;
+    }
+
+        .dialogue-header h2 {
+            text-align: center;
+            padding: auto;
+        }
+}

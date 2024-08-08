@@ -1,0 +1,58 @@
+@model LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div class="row justify-content-center align-items-center" style="min-height: 80vh">
+            <div class="col-12 col-md-5 col-lg-5">
+                <div class="card rounded-4">
+                    <h4 class="card-header py-3 px-4">使用者登入</h4>
+                    <div class="card-body py-3 px-4">
+                        <div class="mb-3">
+                            使用者帳號
+                            <div class="col">
+                                @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            密碼
+                            <div class="col">
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col w-50">
+                                <input type="submit" value="登入" class="btn btn-primary w-100" />
+                            </div>
+                            <div class="col w-50">
+                                <a class="btn btn-secondary w-100" href="@Url.Action("Index", "Home")">取消</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.isError != null)
+{
+    @section endJS 
+    {
+        <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '登入失敗',
+                text: '請檢查帳號及密碼是否輸入正確'
+            })
+        </script>
+    }
+}

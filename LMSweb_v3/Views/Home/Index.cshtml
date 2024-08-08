@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@section topCSS {
+    <style>
+        .carl {
+            align-items: center;
+            background-image: url('https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+            background-size: cover;
+            background-color: rgba(0, 0, 0, .5);
+            background-blend-mode: multiply;
+            height: 90vh;
+            width: 100%;
+            color: white;
+            margin: 0;
+        }
+    </style>
+}
+
+<div class="carl row align-content-center">
+    <div class="row">
+        <p class="font-weight-bold text-center display-4">
+            Welcome!
+        </p>
+        <p class="font-weight-bold text-center display-4 text-white">
+            生成式AI輔助學習系統
+        </p>
+        @* 登入按鈕與箭頭 *@
+        <div class="col-12 text-center">
+            <a class="btn btn-primary btn-lg" href="@Url.Action("Login", "Home")">
+                登入進入系統
+                <i class="bi bi-arrow-right-circle-fill"></i>
+            </a>
+        </div>
+    </div>
+</div>

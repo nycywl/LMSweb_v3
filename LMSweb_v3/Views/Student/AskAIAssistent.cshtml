@@ -1,0 +1,84 @@
+@model AskAIAssistentViewModel
+@{
+    Layout = "~/Views/Shared/_AIAssistantLayout.cshtml";
+    ViewData["Title"] = "AI小幫手";
+    string apiUrl = Url.Action("Post","chat") ?? "";
+}
+
+<div class="dialogue-header">
+    <h2>@Model.CourseName-AI小幫手</h2>
+</div>
+
+<div class="dialogue">
+    <div class="user remote">
+        <div class="avatar">
+            <div class="pic">
+                <img src="~/img/chatbot.png">
+            </div>
+        </div>
+        <div class="text">@Model.Greeting</div>
+    </div>
+</div>
+
+<div class="dialogue-footer">
+    <form id="input-question">
+        <div class="row">
+            <div class="col-8 col-md-10">
+                <input class="form-control" type="text" placeholder="請輸入您的問題" required>
+            </div>
+            <div class="col-4 col-md-2">
+                <input type="hidden" name="user_id" value="@Model.UserId" />
+                <input type="hidden" name="course_id" value="@Model.CourseId" />
+                <button class="btn btn-primary w-100" id="submit-btn" type="submit">
+                    <span class="bi bi-send">Send</span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <span class="text-danger">
+                    回應是由AI機器人自動產生。
+                </span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<template id="local_user">
+    <div class="user local">
+        <div class="avatar">
+            <div class="pic">
+                <img src="~/img/user_icon.svg">
+            </div>
+        </div>
+        <div class="text">立刻引進首次字</div>
+    </div>
+</template>
+
+<template id="remote_user">
+    <div class="user remote">
+        <div class="avatar">
+            <div class="pic">
+                <img src="~/img/chatbot.png">
+            </div>
+        </div>
+        <div class="text">國語書記舉辦精采就。</div>
+    </div>
+</template>
+
+<template id="waiting">
+    <div class="loading">
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+        <div class="circle3"></div>
+        <div class="circle4"></div>
+        <div class="circle5"></div>
+    </div>
+</template>
+
+@section Scripts {
+    <script>
+        const PRO_URL = "@apiUrl";
+    </script>
+    <script src="~/js/remote.js"></script>
+}
