@@ -18,4 +18,3 @@ public class Course
     public virtual ICollection<Material> Materials { get; set; } = new List<Material>();
     public virtual ICollection<Manage> Manages { get; set; } = new List<Manage>();
 }
-

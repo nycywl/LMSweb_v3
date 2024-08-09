@@ -64,11 +64,6 @@ public partial class LMSContext : DbContext
                 .HasForeignKey(d => d.CourseId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Courses_Manage");
-
-            entity.HasMany(d => d.StudentCourses).WithOne(p => p.Course)
-                .HasForeignKey(d => d.CourseId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Courses_StudentCourses");
         });
 
         modelBuilder.Entity<Student>(entity =>
@@ -269,8 +264,8 @@ public partial class LMSContext : DbContext
             new User
             {
                 UserId = "T001",
-                Upassword = HashHelper.SHA256Hash("T00001"),
-                Name = "林廣學",
+                Upassword = HashHelper.SHA256Hash("T001"),
+                Name = "林廣學 老師",
                 RoleName = "Teacher"
             },
             new User
@@ -298,7 +293,7 @@ public partial class LMSContext : DbContext
             {
                 UserId = "T005",
                 Upassword = HashHelper.SHA256Hash("T005"),
-                Name = "蔡老師",
+                Name = "蔡 老師",
                 RoleName = "Teacher"
             }
         };
@@ -344,30 +339,84 @@ public partial class LMSContext : DbContext
             new Teacher
             {
                 TeacherId = "T001",
-                TeacherName = "陳立維"
+                TeacherName = "林廣學 老師"
             },
             new Teacher
             {
                 TeacherId = "T002",
-                TeacherName = "曾老師"
+                TeacherName = "洪子秀 老師"
             },
             new Teacher
             {
                 TeacherId = "T003",
-                TeacherName = "李偉老師"
+                TeacherName = "曾秋蓉 老師"
             },
             new Teacher
             {
                 TeacherId = "T004",
-                TeacherName = "焰超老師"
+                TeacherName = "李偉 老師"
             },
             new Teacher
             {
                 TeacherId = "T005",
-                TeacherName = "蔡老師"
+                TeacherName = "蔡 老師"
             }
         };
         modelBuilder.Entity<Teacher>().HasData(test_teachers);
+
+        var test_courses = new List<Course>
+        {
+            new Course
+            {
+                CourseId = "C001",
+                CourseName = "數學",
+                TeacherId = "T001",
+                CreateTime = DateTime.Now
+            },
+            new Course
+            {
+                CourseId = "C002",
+                CourseName = "物理",
+                TeacherId = "T002",
+                CreateTime = DateTime.Now
+            },
+            new Course
+            {
+                CourseId = "C003",
+                CourseName = "化學",
+                TeacherId = "T003",
+                CreateTime = DateTime.Now
+            },
+            new Course
+            {
+                CourseId = "C004",
+                CourseName = "國文",
+                TeacherId = "T004",
+                CreateTime = DateTime.Now
+            },
+            new Course
+            {
+                CourseId = "C005",
+                CourseName = "論文探討",
+                TeacherId = "T005",
+                CreateTime = DateTime.Now
+            },
+            new Course
+            {
+                CourseId = "C006",
+                CourseName = "英文",
+                TeacherId = "T005",
+                CreateTime = DateTime.Now
+            },
+            new Course
+            {
+                CourseId = "C007",
+                CourseName = "微積分101",
+                TeacherId = "T005",
+                CreateTime = DateTime.Now
+            }
+        };
+        modelBuilder.Entity<Course>().HasData(test_courses);
 
         OnModelCreatingPartial(modelBuilder);
     }

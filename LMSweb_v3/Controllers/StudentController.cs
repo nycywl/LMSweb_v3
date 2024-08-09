@@ -24,9 +24,9 @@ public class StudentController : Controller
             return Unauthorized();
         }
 
-        var data = _studentManagement.GetCourseForStudent(sid.Value);
+        var data = _studentManagement.GetCoursesForStudent(sid.Value);
 
-        if (data == null)
+        if (data == null || !data.Any())
         {
             ViewBag.isError = true;
             return View();
@@ -34,6 +34,7 @@ public class StudentController : Controller
 
         return View(data);
     }
+
 
     public IActionResult AskAIAssistent(string cid)
     {
